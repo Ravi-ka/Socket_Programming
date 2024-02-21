@@ -2,6 +2,7 @@ import express from "express";
 import { Server } from "socket.io";
 import cors from "cors";
 import http from "http";
+import { connectToMongoose } from "./mongooseConfig.js";
 
 const app = express();
 
@@ -29,6 +30,7 @@ io.on("connect", (socket) => {
       username: socket.username,
       message: message,
     };
+
     socket.broadcast.emit("broadcast_message", userMessage);
   });
   socket.on("disconnect", () => {
@@ -38,4 +40,5 @@ io.on("connect", (socket) => {
 
 server.listen(5000, () => {
   console.log("App is listening on 5000");
+  connectToMongoose();
 });
